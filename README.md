@@ -19,8 +19,8 @@ EPaper Management System manages ESP32-driven, seven-color e-paper displays. It 
 | --- | --- |
 | `Interface` | React and TypeScript dashboard for devices, schedules, previews, and canvas editing |
 | `API` | FastAPI endpoints, event scheduling, image processing, MongoDB access, and MQTT publishing |
-| MongoDB | Stores devices, modes, and scheduled events |
-| MQTT broker | Delivers event notifications to targeted ESP32 devices |
+| `MongoDB` | Stores devices, modes, and scheduled events |
+| `MQTT broker` | Delivers event notifications to targeted ESP32 devices |
 | `ePaper` | ESP32 firmware for Wi-Fi provisioning, device registration, MQTT reception, and display rendering |
 
 The event flow is:
