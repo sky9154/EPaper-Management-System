@@ -1,5 +1,7 @@
 # EPaper Management System
 
+![EPaper Management System](./docs/images/readme-banner.webp)
+
 EPaper Management System manages ESP32-driven, seven-color e-paper displays. It combines a React dashboard, a FastAPI service, MongoDB storage, MQTT delivery, and firmware that retrieves display-ready pixel data over HTTP.
 
 ## Features
