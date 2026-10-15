@@ -12,31 +12,38 @@ import {
 
 
 class Canvas {
-  canvasRef: MutableRefObject<HTMLCanvasElement | null>;
+  ref: MutableRefObject<HTMLCanvasElement | null>;
   ctx: CanvasRenderingContext2D | null;
   width: number;
   height: number;
+  tool: string;
   penSize: number;
   penColor: string;
   tools: {
     name: string;
     icon: JSX.Element;
   }[];
+  point: {
+    x: number;
+    y: number;
+  };
   lastPoint: {
     x: number;
     y: number;
   };
 
   constructor(
-    canvasRef: MutableRefObject<HTMLCanvasElement | null>,
+    ref: MutableRefObject<HTMLCanvasElement | null>,
     ctx: CanvasRenderingContext2D | null
   ) {
-    this.canvasRef = canvasRef;
+    this.ref = ref;
     this.ctx = ctx;
     this.width = 0;
     this.height = 0;
-    this.penSize = 0;
+    this.tool = 'pointer'
+    this.penSize = 10;
     this.penColor = '#000000';
+    this.point = { x: 0, y: 0 };
     this.lastPoint = { x: 0, y: 0 };
     this.tools = [{
       name: 'pointer',
@@ -65,22 +72,38 @@ class Canvas {
     }]
   }
 
-  setSize(width: number, height: number, penSize: number) {
+  setCanvasSize(width: number, height: number) {
     this.width = width;
     this.height = height;
-    this.penSize = penSize;
   }
 
-  setPenColor(penColor: string) {
-    this.penColor = penColor;
+  setTool(tool: string, set: (tool: string) => void) {
+    this.tool = tool;
+    set(tool);
   }
 
-  setLastPoint(lastPoint: { x: number, y: number }) {
-    this.lastPoint = lastPoint;
+  setPenSize(size: number, set: (size: number) => void) {
+    this.penSize = size;
+    set(size);
+  }
+
+  setPenColor(color: string, set: (color: string) => void) {
+    this.penColor = color;
+    set(color);
+  }
+
+  setPoint(point: { x: number, y: number }, set: (point: { x: number, y: number }) => void) {
+    this.point = point;
+    set(point);
+  }
+
+  setLastPoint(point: { x: number, y: number }, set: (point: { x: number, y: number }) => void) {
+    this.lastPoint = point;
+    set(point);
   }
 
   saveCanvas(setSavedImage: (savedImage: HTMLImageElement) => void) {
-    const canvas = this.canvasRef.current;
+    const canvas = this.ref.current;
 
     if (canvas) {
       const saved = new Image();
@@ -90,7 +113,7 @@ class Canvas {
   };
 
   restore(savedImage: HTMLImageElement) {
-    const canvas = this.canvasRef.current;
+    const canvas = this.ref.current;
 
     if (canvas) {
       const ctx = canvas.getContext('2d');
@@ -150,7 +173,7 @@ class Canvas {
   }
 
   download() {
-    const canvas = this.canvasRef.current;
+    const canvas = this.ref.current;
     const today = new Date();
     const year = today.getFullYear();
     const month = String(today.getMonth() + 1).padStart(2, '0');
@@ -196,7 +219,8 @@ class Canvas {
     }
   }
 
-  drawLine(point: { x: number, y: number }) {
+  drawLine() {
+    const point = this.point;
     const lastPoint = this.lastPoint;
 
     if (this.ctx) {
@@ -206,7 +230,8 @@ class Canvas {
     }
   }
 
-  drawRectangle(point: { x: number, y: number }) {
+  drawRectangle() {
+    const point = this.point;
     const lastPoint = this.lastPoint;
 
     const width = lastPoint.x - point.x;
@@ -218,7 +243,8 @@ class Canvas {
 
   }
 
-  drawOval(point: { x: number, y: number }) {
+  drawOval() {
+    const point = this.point;
     const lastPoint = this.lastPoint;
 
     if (this.ctx) {

@@ -1,4 +1,4 @@
-from PIL import Image, ImageDraw, ImageFont, ImageEnhance
+from PIL import Image, ImageDraw, ImageFont
 import numpy as np
 import cv2
 
@@ -44,7 +44,7 @@ class ePaper ():
     '''
 
     frame = self.image
-    
+
     height, width = frame.shape[:2]
     aspect_ratio = width / height
 
@@ -71,15 +71,15 @@ class ePaper ():
 
     image = Image.open(self.image_path)
 
-    converter = ImageEnhance.Color(image)
-    image = converter.enhance(3)
-
     for x in range(image.width):
       for y in range(image.height):
         pixel = image.getpixel((x, y))
 
         if pixel[1] > pixel[0] and pixel[1] > pixel[2]:
-          image.putpixel((x, y), (pixel[1] >> 1, (pixel[1] >> 2) + pixel[1], pixel[2] >> 1))
+          r = pixel[0] + ((pixel[1] - pixel[0]) >> 1)
+          g = pixel[1]
+          b = pixel[2] + ((pixel[1] - pixel[2]) >> 1)
+          image.putpixel((x, y), (r, g, b))
 
     expanded = Image.new(image.mode, (image.width, image.height))
     expanded.paste(image)
@@ -94,7 +94,7 @@ class ePaper ():
       0xff, 0x80, 0x00
     ]
 
-    palette_data += [0] * (249 * 3 - 1)
+    palette_data += [0] * ((256 - 7) * 3)
 
     palimage = Image.new('P', (image.width, image.height))
     palimage.putpalette(palette_data)
