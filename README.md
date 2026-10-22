@@ -51,7 +51,7 @@ The event flow is:
 - Uvicorn `0.53.0`
 - MongoDB with PyMongo `4.18.3`
 - An MQTT broker with Paho MQTT `2.1.0`
-- Pillow `12.3.0`, NumPy `2.5.4`, and OpenCV `5.0.0.93`
+- Pillow `13.0.0`, NumPy `2.5.4`, and OpenCV `5.0.0.93`
 - python-dotenv `1.2.4`
 - python-multipart `0.0.32`
 
